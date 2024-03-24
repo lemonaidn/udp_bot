@@ -7,7 +7,7 @@ I attempted to build a scraper using beautifulsoup that ultimately didn't work. 
 
 Scraping no longer seems like the best path forward. I coooould build one out with Selenium, but at that point it makes more sense to just learn how to use the openFEC API.
 
-Another problem: I want to be able to extract several pieces of information from the actual document that isn't present in the FEC's table. Hopefully pulling info from the API contains more information, but I'm going to assume I'll run into the same problem I was going to have to deal with if scraping had worked. The key addtl info I want to extract is:
+Another problem: I want to be able to extract several pieces of information from the actual document that isn't present in the FEC's table on its webpages. Hopefully the info is included by default when pulling info about disclosures from the API, but I'm going to assume I'll run into the same problem I was going to have to deal with if scraping had worked. The key addtl info I want to extract is:
 
 * Amount
 * Name of Federal Candidate
