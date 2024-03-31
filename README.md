@@ -27,3 +27,20 @@ The last two numbers exist in the FEC's table as the "beginning image number" so
 So... if using the API doesn't get me closer to extracting that information, then I might need to try using Selenium anyway?? Or fastFEC? Let's really hope not.
 
 I don't have much to show yet but hopefully that'll be different after playing around with the API
+
+## March 30
+
+Used openFEC to download json for each filing instead. The json didn't include most of the key information I'm looking for, but it did include urls to the csvs of thefilings which did have that additional info.
+
+The values in the csv required some mapping to connect them to the info from the pdf disclosures. The csvs were also formatted horribly -- they contained three lines/tables of data each. Wrote code to download the csvs (needed to build in some steps so the remote server wouldn't close the connection due to issues like rate limiting or incorrect headers), isolate only the third line/table of data, and extract only the information I'm interested in: campaign, disbursment_date_amount, amount_ytd, expense_type, oppose_or_support, candidate_last_name, candidate_first_name, house_or_senate, district, state.
+
+ChatGPT was invaluable in helping me accomplish these steps.
+
+My remaining steps:
+
+* combine the scripts I used for each of these steps into one cohesive script
+* add column headers to the data
+* add pdf urls to the data so users can look at the original forms every time the bot sends out a new update
+* add code to the script that isolates new filings since the prior day's data extraction
+* set up the bot
+* set up github actions to run the script on a daily basis
