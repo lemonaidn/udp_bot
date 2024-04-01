@@ -42,5 +42,6 @@ My remaining steps:
 * add column headers to the data
 * add pdf urls to the data so users can look at the original forms every time the bot sends out a new update
 * add code to the script that isolates new filings since the prior day's data extraction
+* clean values so they're more straightforward (for example, map any P2024 values to read "Primary 2023" instead)
 * set up the bot
 * set up github actions to run the script on a daily basis
