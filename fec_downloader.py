@@ -1,16 +1,20 @@
 import requests
 import csv
 import time
+import os
 
-# Path to the file containing the URLs
-urls_file_path = 'csv_urls.csv'
-# Path to the output file
-output_file_path = 'csv_output.csv'
+# Path to the file containing the FEC URLs
+urls_file_path = 'fec_urls.csv'
+# Directory to save the downloaded FEC files
+fec_files_dir = 'fec_files'
 
 # Headers to mimic a browser request
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
+
+# Ensure the directory for FEC files exists
+os.makedirs(fec_files_dir, exist_ok=True)
 
 # Function to make a request with retries
 def make_request(url, num_retries=3):
@@ -33,23 +37,19 @@ def make_request(url, num_retries=3):
 with open(urls_file_path, 'r') as file:
     urls = [line.strip() for line in file if line.strip()]
 
-# Open the output file
-with open(output_file_path, 'w', newline='') as outfile:
-    writer = csv.writer(outfile)
+# Loop through each URL to download FEC files
+for url in urls:
+    response = make_request(url)
+    if response:
+        # Get the filename from the URL to save it locally
+        filename = url.split('/')[-1]
+        path_to_save = os.path.join(fec_files_dir, filename)
 
-    # Loop through each URL
-    for url in urls:
-        response = make_request(url)
-        if response:
-            # Decode the content and split it into lines
-            content = response.content.decode('utf-8')
-            lines = content.splitlines()
-            # Extract the third line
-            third_line = lines[2] if len(lines) > 2 else None
-            # Write the third line to the output file
-            if third_line:
-                reader = csv.reader([third_line])
-                for row in reader:
-                    writer.writerow(row)
-        # Wait a bit between requests to respect the server's rate limit
-        time.sleep(1)  # Wait 1 second before the next request
+        # Save the content to a file
+        with open(path_to_save, 'wb') as fec_file:
+            fec_file.write(response.content)
+
+        print(f"Downloaded and saved {filename}")
+
+    # Wait a bit between requests to respect the server's rate limit
+    time.sleep(1)  # Wait 1 second before the next request

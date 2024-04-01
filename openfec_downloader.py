@@ -26,20 +26,21 @@ if r.status_code == 200:
 
     print(f"Data successfully saved to {json_file_path}")
 
-    # Extract the csv_url and pdf_url from each result
-    urls = [(result['csv_url'], result['pdf_url']) for result in data['results']]
+    # Extract only the fec_url from each result
+    # Use get() method to handle cases where 'fec_url' might not be present
+    fec_urls = [result.get('fec_url', '') for result in data['results']]
 
-    # Define the CSV file path where you want to save the URLs
-    csv_file_path = 'urls.csv'
+    # Define the CSV file path where you want to save the FEC URLs
+    fec_csv_file_path = 'fec_urls.csv'
 
-    # Write the URLs to a CSV file
-    with open(csv_file_path, 'w', newline='') as file:
+    # Write the FEC URLs to a CSV file
+    with open(fec_csv_file_path, 'w', newline='') as file:
         writer = csv.writer(file)
         # Write the header row
-        writer.writerow(['CSV URL', 'PDF URL'])
-        for csv_url, pdf_url in urls:
-            writer.writerow([csv_url, pdf_url])
+        writer.writerow(['FEC URL'])  # Only one column for FEC URL
+        for fec_url in fec_urls:
+            writer.writerow([fec_url])  # Write each FEC URL
 
-    print(f"URLs successfully saved to {csv_file_path}")
+    print(f"FEC URLs successfully saved to {fec_csv_file_path}")
 else:
     print("Failed to retrieve data from API")

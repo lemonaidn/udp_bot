@@ -1,27 +1,44 @@
+import os
 import csv
+import fecfile
 
-# Path to the CSV files
-updated_csv_path = 'csv_output.csv'  # Replace with your CSV file path
+# Define the directory where .fec files are stored
+directory_path = 'fec_files'
 
-# Path to the new CSV file
-new_csv_path = 'desired_data.csv'  # Replace with your desired output file path
+# Define the CSV file path for storing the results
+csv_file_path = 'last_twenty_ind_expenditures_df.csv'
 
-# The indices of the columns we want to include, zero-based
-included_column_indices = [17, 19, 20, 22, 23, 26, 28, 29, 33, 34, 35]
+# Prepare to collect data from all .fec files
+all_data = []
 
-# Read the original CSV and write the filtered data to the new CSV
-with open(updated_csv_path, 'r') as infile, open(new_csv_path, 'w', newline='') as outfile:
-    reader = csv.reader(infile)
-    writer = csv.writer(outfile)
+# Iterate through each file in the directory
+for filename in os.listdir(directory_path):
+    if filename.endswith('.fec'):
+        file_path = os.path.join(directory_path, filename)
+        
+        # Open and parse the .fec file
+        with open(file_path, 'r') as file:
+            data = fecfile.loads(file.read())
+            
+            # Extract information from 'Schedule E' itemizations
+            for item in data.get('itemizations', {}).get('Schedule E', []):
+                # Extract relevant fields
+                amount = item.get('expenditure_amount')
+                candidate_name = f"{item.get('candidate_first_name', '')} {item.get('candidate_last_name', '')}".strip()
+                support_oppose = 'Support' if item.get('support_oppose_code') == 'S' else 'Oppose'
+                district = item.get('candidate_district')
+                state = item.get('candidate_state')
+                purpose = item.get('expenditure_purpose_descrip')
+                ytd_amount = item.get('calendar_y_t_d_per_election_office')
+                election = 'Primary' if item.get('election_code') == 'P2024' else 'General'
+                
+                # Add the extracted information to the all_data list
+                all_data.append([amount, candidate_name, support_oppose, district, state, purpose, ytd_amount, election])
 
-    # Write the headers for the included columns
-    # We are using the included_column_indices to extract the headers
-    headers = next(reader)
-    writer.writerow([headers[index] for index in included_column_indices])
+# Write the collected data to a CSV file
+with open(csv_file_path, mode='w', newline='', encoding='utf-8') as csv_file:
+    writer = csv.writer(csv_file)
+    writer.writerow(['Amount', 'Candidate Name', 'Support/Oppose', 'District', 'State', 'Purpose', 'YTD Amount', 'Election'])
+    writer.writerows(all_data)
 
-    # Write the data rows
-    for row in reader:
-        filtered_row = [row[index] for index in included_column_indices]
-        writer.writerow(filtered_row)
-
-# The new CSV file is now created at the 'new_csv_path'.
+print(f"Data extracted to CSV file: {csv_file_path}")
