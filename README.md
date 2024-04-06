@@ -45,3 +45,9 @@ My remaining steps:
 * clean values so they're more straightforward (for example, map any P2024 values to read "Primary 2023" instead)
 * set up the bot
 * set up github actions to run the script on a daily basis
+
+## April 6
+
+Tasks completed since March 30:
+
+* 
