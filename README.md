@@ -50,4 +50,7 @@ My remaining steps:
 
 Tasks completed since March 30:
 
-* 
+* added code to the script that isolates new filings since the prior day's data extraction
+* cleaned values so they're more straightforward (for example, map any P2024 values to read "Primary 2023" instead)
+* set up the bot
+* add column headers to the data
