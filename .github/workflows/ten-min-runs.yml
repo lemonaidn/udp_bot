@@ -25,7 +25,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install fecfile tweepy
+        run: pip install fecfile tweepy requests
 
       - name: Run shell script
         run: |
