@@ -1,0 +1,37 @@
+name: Run Shell Script Every 10 Minutes
+
+on:
+  push:
+    branches:
+      - '*'
+  schedule:
+    - cron: '*/10 * * * *'  # This schedule runs every 10 minutes
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install fecfile tweepy
+
+      - name: Run shell script
+        run: |
+          chmod +x ./run_scripts.sh
+          ./run_scripts.sh
+      
+      - name: "Commit and push if it changed"
+        run: |-
+            git config user.name "Automated"
+            git config user.email "actions@users.noreply.github.com"
+            git add -A
+            timestamp=$(date -u)
+            git commit -m "Latest data: ${timestamp}" || exit 0
+            git push
