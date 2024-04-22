@@ -23,7 +23,12 @@ jobs:
         run: pip install fecfile tweepy
 
       - name: Run shell script
-        run: |
+      env:
+          TWITTER_AUTH_ACCESS_TOKEN: ${{ secrets.TWITTER_AUTH_ACCESS_TOKEN }}
+          TWITTER_AUTH_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_AUTH_ACCESS_TOKEN_SECRET }}
+          TWITTER_CONSUMER_API_KEY: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
+          TWITTER_CONSUMER_API_KEY_SECRET: ${{ secrets.TWITTER_CONSUMER_API_KEY_SECRET }}  
+      run: |
           chmod +x ./run_scripts.sh
           ./run_scripts.sh
       
