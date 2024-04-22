@@ -28,7 +28,7 @@ jobs:
           TWITTER_AUTH_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_AUTH_ACCESS_TOKEN_SECRET }}
           TWITTER_CONSUMER_API_KEY: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
           TWITTER_CONSUMER_API_KEY_SECRET: ${{ secrets.TWITTER_CONSUMER_API_KEY_SECRET }}  
-      run: |
+        run: |
           chmod +x ./run_scripts.sh
           ./run_scripts.sh
       
