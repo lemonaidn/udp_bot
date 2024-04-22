@@ -13,11 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Check Python version and environment variable
-        run: |
-        python --version
-        echo "FEC_API_KEY=$FEC_API_KEY"
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -25,10 +20,12 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install fecfile tweepy requests
+        run: pip install fecfile tweepy
 
       - name: Run shell script
-        run: bash run_scripts.sh
+        run: |
+          chmod +x ./run_scripts.sh
+          ./run_scripts.sh
       
       - name: "Commit and push if it changed"
         run: |-
