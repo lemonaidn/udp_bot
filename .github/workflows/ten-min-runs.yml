@@ -28,9 +28,7 @@ jobs:
         run: pip install fecfile tweepy requests
 
       - name: Run shell script
-        run: |
-          chmod +x ./run_scripts.sh
-          ./run_scripts.sh
+        run: bash run_scripts.sh
       
       - name: "Commit and push if it changed"
         run: |-
