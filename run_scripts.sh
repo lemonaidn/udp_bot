@@ -19,7 +19,7 @@ echo "Starting extract_desired_data.py..."
 python extract_desired_data.py
 echo "extract_desired_data.py completed successfully."
 
-echo "Starting slack_bot.py..."
+echo "Starting twitter_bot.py..."
 python tweepy-bots/twitter_bot.py
 echo "twitter_bot.py completed successfully."
 
